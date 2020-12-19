@@ -1,1 +1,2 @@
-web: gunicorn Anivior_backend.wsgi
+web:gunicorn Anivior_backend.wsgi: application --preload
+
