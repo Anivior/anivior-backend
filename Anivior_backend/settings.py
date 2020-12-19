@@ -96,8 +96,8 @@ DATABASES = {
     'default':
                 {'ENGINE': 'django.contrib.gis.db.backends.postgis',
                  'NAME': 'Anivior_backend',
-                 'USER': config('POSTGRES_USER'),
-                 'PASSWORD': config('POSTGRES_PASSWORD'),
+                 'USER': os.environ.get('POSTGRES_USER'),
+                 'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
                  'HOST': 'localhost',
                  'PORT': '5432', }
 }
