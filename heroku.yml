@@ -1,0 +1,14 @@
+setup:
+  config: {
+  SECRET_KEY: 'g=c=6+q(zt8)=(t4c_07&r^-mf_)0y%kec-edh40tibdx_v4px'
+  DEBUG: True
+  POSTGRES_PASSWORD: 'root'
+  POSTGRES_USER: 'postgres'
+  }
+build:
+  packages:
+    - gdal-bin
+  languages:
+    - python
+run:
+  web: gunicorn Anivior_backend.wsgi
