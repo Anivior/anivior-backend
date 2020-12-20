@@ -4,6 +4,8 @@ setup:
   DEBUG: True,
   POSTGRES_PASSWORD: 'root',
   POSTGRES_USER: 'postgres',
+  EMAIL_HOST_USER: 'gaurkrishna498@gmail.com',
+  EMAIL_HOST_PASSWORD: 'krsqvnfobjkuvsna'
   }
 build:
   packages:

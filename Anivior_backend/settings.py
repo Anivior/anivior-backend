@@ -40,7 +40,7 @@ SECRET_KEY = 'g=c=6+q(zt8)=(t4c_07&r^-mf_)0y%kec-edh40tibdx_v4px'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['anivior.herokuapp.com']
+ALLOWED_HOSTS = ['anivior.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'Ngo',
     'leaflet',
     'corsheaders',
+    'User',
 ]
 
 MIDDLEWARE = [
@@ -97,8 +98,13 @@ DATABASES = {
     'default':
                 {'ENGINE': 'django.contrib.gis.db.backends.postgis',
                  'NAME': 'Anivior_backend',
-                 'USER': os.environ.get('POSTGRES_USER'),
-                 'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+                # heroku settings
+                #  'USER': os.environ.get('POSTGRES_USER'),
+                #  'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+
+                #Local settings
+                 'USER': config('POSTGRES_USER'),
+                 'PASSWORD': config('POSTGRES_PASSWORD'),
                  'HOST': 'localhost',
                  'PORT': '5432', }
 }
@@ -143,15 +149,25 @@ AUTH_USER_MODEL = 'Ngo.NGO'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 
-django_heroku.settings(locals())
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
-CORS_ORIGIN_ALLOW_ALL = True
+#heroku settings
+# django_heroku.settings(locals())
 
-GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
-GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
+# CORS_ORIGIN_ALLOW_ALL = True
+
+# GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
+# GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
 
 
-DATABASES['default'] = dj_database_url.config()
-DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+# DATABASES['default'] = dj_database_url.config()
+# DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
