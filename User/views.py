@@ -50,7 +50,7 @@ class LocateNgo(GenericAPIView):
         image = sos.image
         img_data = image.read()
         html_part = MIMEMultipart(_subtype='related')
-        text = f'<p>Alert {category} injured at {address}<img src="cid:myimage" width="200" height="121"/></p>'
+        text = f'<p>Alert {category} injured at {address}<img src="cid:myimage" width="150" height="350"/></p>'
         body = MIMEText(text, _subtype='html')
         html_part.attach(body)
         
