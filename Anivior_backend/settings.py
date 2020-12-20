@@ -35,7 +35,6 @@ if os.name == 'nt':
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'g=c=6+q(zt8)=(t4c_07&r^-mf_)0y%kec-edh40tibdx_v4px'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
