@@ -11,7 +11,7 @@ from django.core.mail import EmailMessage
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
+from geopy.geocoders import Nominatim
 # Create your views here.
 
 
@@ -36,12 +36,21 @@ class LocateNgo(GenericAPIView):
 
         latitude = float(serializer.data['latitude'])
         longitude = float(serializer.data['longitude'])
-        image = sos.image
-        # category = serializer.data['category']
+        category = serializer.data['category']
         
+        location = GEOSGeometry(f'POINT({longitude} {latitude})', srid=4326)
+        Ngo_within_radius = NGO.objects.filter(point__distance_lte = (location, D(km=5)))
+        recipient_list = []
+        for ngo in Ngo_within_radius:
+            recipient_list.append(ngo.email)
+
+        geolocator = Nominatim(user_agent="User.views.py")
+        location = geolocator.reverse(f"{latitude}, {longitude}")
+        address = location.address 
+        image = sos.image
         img_data = image.read()
         html_part = MIMEMultipart(_subtype='related')
-        body = MIMEText('<p>Hello <img src="cid:myimage" /></p>', _subtype='html')
+        body = MIMEText('<p>Alert {{category}} injured at {{address}})<img src="cid:myimage" width="200" height="121"/></p>', _subtype='html')
         html_part.attach(body)
         
         img = MIMEImage(img_data, 'jpeg')
@@ -50,12 +59,10 @@ class LocateNgo(GenericAPIView):
         html_part.attach(img)
 
         from_email = settings.EMAIL_HOST_USER
-        recipient_list = ["201951083@iiitvadodara.ac.in", ]
-        msg = EmailMessage('Subject Line', None, from_email, recipient_list)
+        msg = EmailMessage(f'{category} injured ', None, from_email, recipient_list)
         msg.attach(html_part)
         msg.send()
-        location = GEOSGeometry(f'POINT({longitude} {latitude})', srid=4326)
-        Ngo_within_radius = NGO.objects.filter(point__distance_lte = (location, D(km=5)))
+        
 
         serializer = NgoSerializer(Ngo_within_radius, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
