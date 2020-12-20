@@ -40,7 +40,7 @@ SECRET_KEY = 'g=c=6+q(zt8)=(t4c_07&r^-mf_)0y%kec-edh40tibdx_v4px'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['anivior.herokuapp.com']
+ALLOWED_HOSTS = ['anivior.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'Ngo',
     'leaflet',
     'corsheaders',
+    'User',
 ]
 
 MIDDLEWARE = [
@@ -143,7 +144,16 @@ AUTH_USER_MODEL = 'Ngo.NGO'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 django_heroku.settings(locals())
 
